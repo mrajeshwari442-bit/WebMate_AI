@@ -2,7 +2,7 @@ import os
 from flask import Flask, jsonify, render_template, request
 from dotenv import load_dotenv
 from google import genai
-from chatbot_config import SCOPE_PROMPT, SYSTEM_PROMPT
+from chatbot_config import SYSTEM_PROMPT
 
 load_dotenv()
 
