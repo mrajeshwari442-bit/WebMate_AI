@@ -1,9 +1,12 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080b16">
     <title>WebMate AI</title>
+
     <style>
         :root {
             --bg: #080b16;
@@ -17,40 +20,67 @@
             --user: #6651d9;
         }
 
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
 
         body {
-            margin: 0;
             min-height: 100vh;
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            min-height: 100dvh;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+                BlinkMacSystemFont, "Segoe UI", sans-serif;
             color: var(--text);
+
             background:
-                radial-gradient(circle at 15% 15%, rgba(124, 92, 255, .20), transparent 28%),
-                radial-gradient(circle at 85% 85%, rgba(35, 213, 171, .12), transparent 26%),
+                radial-gradient(
+                    circle at 15% 15%,
+                    rgba(124, 92, 255, .20),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 85%,
+                    rgba(35, 213, 171, .12),
+                    transparent 26%
+                ),
                 var(--bg);
+
             display: grid;
             place-items: center;
             padding: 24px;
+            overflow: hidden;
         }
 
         .app {
             width: min(1050px, 100%);
             height: min(780px, calc(100vh - 48px));
+            height: min(780px, calc(100dvh - 48px));
             min-height: 620px;
+
             display: grid;
-            grid-template-columns: 245px 1fr;
+            grid-template-columns: 245px minmax(0, 1fr);
+
             overflow: hidden;
+
             border: 1px solid var(--border);
             border-radius: 28px;
+
             background: var(--panel);
             backdrop-filter: blur(22px);
-            box-shadow: 0 30px 100px rgba(0,0,0,.45);
+
+            box-shadow: 0 30px 100px rgba(0, 0, 0, .45);
         }
 
         aside {
             padding: 25px 18px;
             border-right: 1px solid var(--border);
-            background: rgba(255,255,255,.018);
+            background: rgba(255, 255, 255, .018);
         }
 
         .brand {
@@ -64,15 +94,32 @@
             width: 42px;
             height: 42px;
             border-radius: 14px;
+
             display: grid;
             place-items: center;
+
             font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), #9b7cff);
-            box-shadow: 0 8px 25px rgba(124,92,255,.35);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #9b7cff
+                );
+
+            box-shadow:
+                0 8px 25px rgba(124, 92, 255, .35);
         }
 
-        .brand strong { display: block; font-size: 16px; }
-        .brand span { color: var(--muted); font-size: 11px; }
+        .brand strong {
+            display: block;
+            font-size: 16px;
+        }
+
+        .brand span {
+            color: var(--muted);
+            font-size: 11px;
+        }
 
         .side-title {
             color: var(--muted);
@@ -89,6 +136,10 @@
             color: #c8d0e3;
             font-size: 13px;
             margin-bottom: 5px;
+
+            transition:
+                background .15s ease,
+                border-color .15s ease;
         }
 
         .topic:hover {
@@ -99,26 +150,38 @@
         .scope {
             margin-top: 28px;
             padding: 14px;
+
             border-radius: 16px;
-            background: rgba(35,213,171,.06);
-            border: 1px solid rgba(35,213,171,.13);
+
+            background: rgba(35, 213, 171, .06);
+            border: 1px solid rgba(35, 213, 171, .13);
+
             color: #b8c7c4;
+
             font-size: 12px;
             line-height: 1.6;
         }
 
         main {
             min-width: 0;
+            min-height: 0;
+
             display: flex;
             flex-direction: column;
+
+            overflow: hidden;
         }
 
         header {
             min-height: 76px;
+            flex: 0 0 76px;
+
             padding: 17px 22px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             border-bottom: 1px solid var(--border);
         }
 
@@ -126,6 +189,7 @@
             display: flex;
             align-items: center;
             gap: 9px;
+
             color: var(--muted);
             font-size: 12px;
         }
@@ -134,15 +198,51 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
+
             background: var(--accent-2);
-            box-shadow: 0 0 12px var(--accent-2);
+
+            box-shadow:
+                0 0 12px var(--accent-2);
         }
 
+        /* CHAT SCROLL */
+
         #messages {
-            flex: 1;
+            flex: 1 1 auto;
+
+            min-height: 0;
+            min-width: 0;
+
             overflow-y: auto;
+            overflow-x: hidden;
+
             padding: 28px clamp(18px, 5vw, 55px);
+
             scroll-behavior: smooth;
+
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+
+            overscroll-behavior-y: contain;
+
+            scrollbar-width: thin;
+        }
+
+        #messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, .15);
+            border-radius: 10px;
+        }
+
+        #messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, .25);
         }
 
         .welcome {
@@ -154,289 +254,662 @@
         .welcome .orb {
             width: 68px;
             height: 68px;
+
             margin: 0 auto 18px;
+
             border-radius: 22px;
+
             background:
-                radial-gradient(circle at 35% 30%, #b8a8ff, transparent 35%),
-                linear-gradient(135deg, #6347ef, #241c5e);
-            box-shadow: 0 18px 45px rgba(124,92,255,.28);
+                radial-gradient(
+                    circle at 35% 30%,
+                    #b8a8ff,
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #6347ef,
+                    #241c5e
+                );
+
+            box-shadow:
+                0 18px 45px rgba(124, 92, 255, .28);
         }
 
         .welcome h1 {
             margin: 0 0 10px;
+
             font-size: clamp(25px, 4vw, 38px);
+
             letter-spacing: -.04em;
         }
 
         .welcome p {
             margin: 0 auto;
+
             max-width: 520px;
+
             color: var(--muted);
+
             line-height: 1.65;
+
             font-size: 14px;
         }
 
         .message {
             display: flex;
             gap: 11px;
+
             margin: 0 auto 22px;
+
             max-width: 760px;
+
             animation: rise .22s ease;
+
+            touch-action: pan-y;
         }
 
         @keyframes rise {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .message.user { justify-content: flex-end; }
+        .message.user {
+            justify-content: flex-end;
+        }
 
         .bubble {
             max-width: 78%;
+
             padding: 12px 15px;
+
             border-radius: 17px;
+
             font-size: 14px;
             line-height: 1.65;
+
             white-space: pre-wrap;
+
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .assistant .bubble {
             background: var(--panel-soft);
+
             border: 1px solid var(--border);
+
             border-top-left-radius: 5px;
         }
 
         .user .bubble {
             background: var(--user);
+
             border-top-right-radius: 5px;
-            box-shadow: 0 8px 22px rgba(102,81,217,.2);
+
+            box-shadow:
+                0 8px 22px rgba(102, 81, 217, .2);
         }
 
         .avatar {
             width: 31px;
             height: 31px;
+
             flex: 0 0 31px;
+
             display: grid;
             place-items: center;
+
             border-radius: 10px;
+
             font-size: 11px;
             font-weight: 800;
         }
 
-        .assistant .avatar { background: rgba(124,92,255,.16); color: #aa99ff; }
-        .user .avatar { background: rgba(255,255,255,.12); color: #fff; }
+        .assistant .avatar {
+            background: rgba(124, 92, 255, .16);
+            color: #aa99ff;
+        }
+
+        .user .avatar {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+        }
 
         .composer {
+            flex: 0 0 auto;
+
             padding: 14px 18px 18px;
+
             border-top: 1px solid var(--border);
+
+            background: rgba(8, 11, 22, .18);
         }
 
         .input-wrap {
             display: flex;
             align-items: flex-end;
             gap: 10px;
+
             padding: 8px 8px 8px 15px;
+
             border: 1px solid var(--border);
             border-radius: 20px;
-            background: rgba(0,0,0,.16);
+
+            background: rgba(0, 0, 0, .16);
         }
 
         textarea {
             flex: 1;
+
             min-height: 44px;
             max-height: 130px;
+
             resize: none;
+
             border: 0;
             outline: 0;
+
             color: var(--text);
             background: transparent;
+
             font: inherit;
             font-size: 14px;
             line-height: 1.5;
+
             padding: 11px 0;
+
+            touch-action: pan-y;
         }
 
-        textarea::placeholder { color: #68738d; }
+        textarea::placeholder {
+            color: #68738d;
+        }
 
         button {
             width: 44px;
             height: 44px;
+
+            flex: 0 0 44px;
+
             border: 0;
             border-radius: 14px;
+
             color: white;
-            background: linear-gradient(135deg, var(--accent), #654be0);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--accent),
+                    #654be0
+                );
+
             cursor: pointer;
+
             font-size: 17px;
-            transition: transform .15s ease, opacity .15s ease;
+
+            transition:
+                transform .15s ease,
+                opacity .15s ease;
         }
 
-        button:hover { transform: translateY(-1px); }
-        button:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+        }
 
         .hint {
             margin: 9px 5px 0;
+
             color: #606b83;
+
             font-size: 10px;
+
             text-align: center;
         }
 
+        /* MOBILE */
+
         @media (max-width: 760px) {
-            body { padding: 0; }
+
+            body {
+                padding: 0;
+                place-items: stretch;
+                overflow: hidden;
+            }
+
             .app {
+                width: 100%;
                 height: 100vh;
+                height: 100dvh;
+
                 min-height: 0;
+
                 border-radius: 0;
+
                 grid-template-columns: 1fr;
             }
-            aside { display: none; }
-            header { min-height: 64px; }
-            .bubble { max-width: 88%; }
+
+            aside {
+                display: none;
+            }
+
+            main {
+                width: 100%;
+                height: 100%;
+
+                min-height: 0;
+
+                overflow: hidden;
+            }
+
+            header {
+                min-height: 64px;
+                height: 64px;
+                flex-basis: 64px;
+
+                padding: 14px 18px;
+            }
+
+            #messages {
+                padding: 22px 14px 20px;
+
+                overflow-y: scroll;
+                overflow-x: hidden;
+
+                -webkit-overflow-scrolling: touch;
+
+                touch-action: pan-y;
+
+                overscroll-behavior-y: contain;
+            }
+
+            .welcome {
+                margin: 35px auto;
+            }
+
+            .bubble {
+                max-width: 88%;
+            }
+
+            .message {
+                max-width: 100%;
+            }
+
+            .composer {
+                padding:
+                    10px
+                    12px
+                    max(12px, env(safe-area-inset-bottom));
+            }
+
+            .input-wrap {
+                border-radius: 18px;
+            }
+
+            textarea {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            #messages {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .bubble {
+                max-width: 90%;
+                font-size: 14px;
+            }
+
+            .avatar {
+                width: 29px;
+                height: 29px;
+
+                flex-basis: 29px;
+
+                font-size: 9px;
+            }
         }
     </style>
 </head>
+
 <body>
+
     <section class="app">
+
         <aside>
+
             <div class="brand">
+
                 <div class="logo">W</div>
+
                 <div>
                     <strong>WebMate AI</strong>
                     <span>Web Study Assistant</span>
                 </div>
+
             </div>
 
             <p class="side-title">Explore</p>
+
             <div class="topic">🌐 Web Development</div>
             <div class="topic">⚡ JavaScript</div>
-            <div class="topic">🎨 HTML & CSS</div>
+            <div class="topic">🎨 HTML &amp; CSS</div>
             <div class="topic">🔌 Web APIs</div>
             <div class="topic">🛡️ Web Security</div>
-            <div class="topic">🚀 Hosting & Deployment</div>
+            <div class="topic">🚀 Hosting &amp; Deployment</div>
 
             <div class="scope">
                 <strong>Focused mode</strong><br>
                 WebMate AI answers web-related study questions only.
             </div>
+
         </aside>
 
         <main>
+
             <header>
+
                 <div>
                     <strong>WebMate AI</strong>
                 </div>
+
                 <div class="status">
                     <span class="dot"></span>
                     Online
                 </div>
+
             </header>
 
             <div id="messages">
+
                 <div class="welcome" id="welcome">
+
                     <div class="orb"></div>
+
                     <h1>Build better for the web.</h1>
+
                     <p>
                         Ask me about web development, programming for the web,
                         APIs, browsers, HTTP, frontend, backend, deployment,
                         and other web-study topics.
                     </p>
+
                 </div>
+
             </div>
 
             <form class="composer" id="chatForm">
+
                 <div class="input-wrap">
-                    <textarea id="messageInput" rows="1"
-                        placeholder="Ask a web-study question..."></textarea>
-                    <button id="sendButton" type="submit" aria-label="Send">➤</button>
+
+                    <textarea
+                        id="messageInput"
+                        rows="1"
+                        placeholder="Ask a web-study question..."
+                        autocomplete="off"
+                    ></textarea>
+
+                    <button
+                        id="sendButton"
+                        type="submit"
+                        aria-label="Send"
+                    >
+                        ➤
+                    </button>
+
                 </div>
-                <div class="hint">WebMate AI • Focused on web-based learning</div>
+
+                <div class="hint">
+                    WebMate AI • Focused on web-based learning
+                </div>
+
             </form>
+
         </main>
+
     </section>
 
     <script>
+
         const form = document.getElementById("chatForm");
         const input = document.getElementById("messageInput");
         const messages = document.getElementById("messages");
         const sendButton = document.getElementById("sendButton");
         const welcome = document.getElementById("welcome");
 
+
+        function scrollToBottom() {
+
+            requestAnimationFrame(() => {
+
+                messages.scrollTop =
+                    messages.scrollHeight;
+
+            });
+
+        }
+
+
         function addMessage(text, role) {
-            if (welcome) welcome.remove();
 
-            const row = document.createElement("div");
-            row.className = `message ${role}`;
-
-            const avatar = document.createElement("div");
-            avatar.className = "avatar";
-            avatar.textContent = role === "user" ? "YOU" : "W";
-
-            const bubble = document.createElement("div");
-            bubble.className = "bubble";
-            bubble.textContent = text;
-
-            if (role === "user") {
-                row.appendChild(bubble);
-                row.appendChild(avatar);
-            } else {
-                row.appendChild(avatar);
-                row.appendChild(bubble);
+            if (welcome) {
+                welcome.remove();
             }
 
+            const row =
+                document.createElement("div");
+
+            row.className =
+                `message ${role}`;
+
+
+            const avatar =
+                document.createElement("div");
+
+            avatar.className =
+                "avatar";
+
+            avatar.textContent =
+                role === "user"
+                    ? "YOU"
+                    : "W";
+
+
+            const bubble =
+                document.createElement("div");
+
+            bubble.className =
+                "bubble";
+
+            bubble.textContent =
+                text;
+
+
+            if (role === "user") {
+
+                row.appendChild(bubble);
+                row.appendChild(avatar);
+
+            } else {
+
+                row.appendChild(avatar);
+                row.appendChild(bubble);
+
+            }
+
+
             messages.appendChild(row);
-            messages.scrollTop = messages.scrollHeight;
+
+            scrollToBottom();
+
             return bubble;
         }
 
+
         function resizeInput() {
+
             input.style.height = "auto";
-            input.style.height = Math.min(input.scrollHeight, 130) + "px";
+
+            input.style.height =
+                Math.min(
+                    input.scrollHeight,
+                    130
+                ) + "px";
         }
 
-        input.addEventListener("input", resizeInput);
 
-        input.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                form.requestSubmit();
-            }
-        });
+        input.addEventListener(
+            "input",
+            resizeInput
+        );
 
-        form.addEventListener("submit", async (event) => {
-            event.preventDefault();
 
-            const message = input.value.trim();
-            if (!message || sendButton.disabled) return;
+        input.addEventListener(
+            "keydown",
+            (event) => {
 
-            addMessage(message, "user");
-            input.value = "";
-            resizeInput();
+                if (
+                    event.key === "Enter" &&
+                    !event.shiftKey
+                ) {
 
-            sendButton.disabled = true;
-            const replyBubble = addMessage("Thinking...", "assistant");
+                    event.preventDefault();
 
-            try {
-                const response = await fetch("/chat", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message })
-                });
+                    form.requestSubmit();
 
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || "Request failed.");
                 }
 
-                replyBubble.textContent = data.answer;
-            } catch (error) {
-                replyBubble.textContent =
-                    "Sorry, something went wrong. Please try again.";
-            } finally {
-                sendButton.disabled = false;
-                input.focus();
-                messages.scrollTop = messages.scrollHeight;
             }
-        });
+        );
+
+
+        form.addEventListener(
+            "submit",
+            async (event) => {
+
+                event.preventDefault();
+
+
+                const message =
+                    input.value.trim();
+
+
+                if (
+                    !message ||
+                    sendButton.disabled
+                ) {
+                    return;
+                }
+
+
+                addMessage(
+                    message,
+                    "user"
+                );
+
+
+                input.value = "";
+
+                resizeInput();
+
+
+                sendButton.disabled = true;
+
+
+                const replyBubble =
+                    addMessage(
+                        "Thinking...",
+                        "assistant"
+                    );
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/chat",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    message: message
+                                })
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.error ||
+                            "Request failed."
+                        );
+
+                    }
+
+
+                    replyBubble.textContent =
+                        data.answer;
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    replyBubble.textContent =
+                        "Sorry, something went wrong. Please try again.";
+
+                } finally {
+
+                    sendButton.disabled = false;
+
+                    input.focus();
+
+                    scrollToBottom();
+
+                }
+
+            }
+        );
+
+
+        if (window.visualViewport) {
+
+            window.visualViewport.addEventListener(
+                "resize",
+                () => {
+                    scrollToBottom();
+                }
+            );
+
+        }
+
     </script>
+
 </body>
 </html>
+```
