@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
 from google import genai
 from chatbot_config import SYSTEM_PROMPT
@@ -14,25 +14,6 @@ if not api_key:
 
 client = genai.Client(api_key=api_key)
 MODEL = "gemini-3.1-flash-lite"
-OUT_OF_SCOPE_MESSAGE = (
-    "I'm WebMate AI, focused only on web-based study questions. Please ask me "
-    "about HTML, CSS, JavaScript, Flask, HTTP, Web APIs, frontend/backend "
-    "development, or another web-related topic."
-)
-
-
-def is_in_scope(message: str) -> bool:
-    response = client.models.generate_content(
-        model=MODEL,
-        contents=message,
-        config={
-            "system_instruction": SCOPE_PROMPT,
-            "temperature": 0,
-            "max_output_tokens": 10,
-        },
-    )
-    result = (response.text or "").strip().upper()
-    return result == "IN_SCOPE"
 
 
 @app.route("/")
@@ -49,12 +30,14 @@ def chat():
         return jsonify({"error": "Please enter a message."}), 400
 
     try:
-        if not is_in_scope(message):
-            return jsonify({"answer": OUT_OF_SCOPE_MESSAGE})
-
         response = client.models.generate_content(
             model=MODEL,
-            contents=message,
+            contents=[
+                {
+                    "role": "user",
+                    "parts": [{"text": message}],
+                }
+            ],
             config={
                 "system_instruction": SYSTEM_PROMPT,
                 "temperature": 0.3,
